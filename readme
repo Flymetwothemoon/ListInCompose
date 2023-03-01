@@ -4,3 +4,13 @@
 
     遇到的一个疑惑
     没看到后面，感觉remember能保存的不会太多，我第一次点第一个让它的字体变了一个颜色，刷到下面然后再往回去看，字体颜色变回去了
+
+    动画
+    在该demo中,它的动画主要体现在按字的时候字体的颜色会逐渐发生变化,虽然我看不出来
+    用val surfaceColor:Color by animateColorAsState(if(isExpanded) MaterialTheme.colors.primary else MaterialTheme.colors.secondary)
+该段代码,让按之前字体的颜色是MaterialTheme.colors.secondary,按之后是 MaterialTheme.colors.primary,用surface把你要进行变化的那段字包裹起来
+ shape = MaterialTheme.shapes.small,
+                //large直接没有弧度,medium有一点弧度,small的弧度最大
+                elevation = 100.dp,
+                //设置阴影大小
+                  modifier = Modifier.animateContentSize().padding(1.dp)//这个是真不知道干嘛用的,唯一一点就是我改变padding里面的dp大小,不用进行重新编译,就会进行变化

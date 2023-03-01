@@ -3,8 +3,11 @@ package com.example.listincompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -77,19 +80,34 @@ fun MessageListItem(message: Message) {
                 .clip(
                     CircleShape
                 )
-                .size(100.dp) )
+                .size(100.dp).border(1.5.dp, MaterialTheme.colors.secondaryVariant, CircleShape) )
         Spacer(modifier = Modifier.width(30.dp))
         var isExpanded by remember {
             mutableStateOf(false)
         }
+        //用remember来保存状态
+        val surfaceColor:Color by animateColorAsState(if(isExpanded) MaterialTheme.colors.primary else MaterialTheme.colors.secondary)
+        //一个动画,当按的时候颜色是MaterialTheme.colors.primary
+        //当不按的时候是MaterialTheme.colors.secondary
         Column (modifier = Modifier.clickable{isExpanded=!isExpanded}){
-            Text(
-                text = message.content,
-                style = MaterialTheme.typography.body2,
-                fontSize = 30.sp,
-                maxLines = if(isExpanded)Int.MAX_VALUE else 1,
-                color = if(isExpanded)MaterialTheme.colors.secondary else MaterialTheme.colors.onPrimary
-           )
+            Surface(
+//                shape = MaterialTheme.shapes.medium,
+//                shape = MaterialTheme.shapes.large,
+                shape = MaterialTheme.shapes.small,
+                //large直接没有弧度,medium有一点弧度,small的弧度最大
+                elevation = 100.dp,
+                //阴影
+                color = surfaceColor,
+                modifier = Modifier.animateContentSize().padding(1.dp)
+            ) {
+                Text(
+                    text = message.content,
+                    style = MaterialTheme.typography.body2,
+                    fontSize = 30.sp,
+                    maxLines = if(isExpanded)Int.MAX_VALUE else 1,
+                )
+            }
+
             Spacer(modifier = Modifier.height(30.dp))
             Text(text = message.sender,
             fontSize = 30.sp)
